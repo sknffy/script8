@@ -1,16 +1,10 @@
-# Set the background
 background = codesters.Sprite("Stage2_344")
 background.set_size(20)
 background.set_physics_off()
-# Variable to determine a punch
 punch = False
-# Set the character
 sprite = codesters.Sprite("Fight_test_05a", 0, -50)
-
-# Animation when punching
 def space():
     global punch
-    # Determine that the character has punched
     punch = True
     x = sprite.get_x()
     y = sprite.get_y()
@@ -19,17 +13,14 @@ def space():
     sprite.load_image("FightTest4_05c", x, y)
     sprite.load_image("FightTest5_ee6", x, y)
     sprite.load_image("Fight_test_05a", x, y)
-    # Character has finished the punching sequence
     punch = False
 
 stage.event_key("space", space)
 
 def move_right():
     x = sprite.get_x()
-    # Move right
     sprite.move_right(50)
     x_stage = background.get_x()
-    # Move the background left
     if x > 100 and x_stage > -1000:
         background.move_left(50)
 
@@ -37,19 +28,16 @@ def move_left():
     x = sprite.get_x()
     sprite.move_left(50)
     x_stage = background.get_x()
-    # Move the background right
     if x < -100 and x_stage < 1000:
         background.move_right(50)
 
 def move_up():
-    # Check for an invisible wall imitation
     if sprite.get_y() > -25:
         sprite.move_up(0)
     else:
         sprite.move_up(50)
 
-def move_down():
-    # Check for an invisible wall imitation
+def move_down():    
     if sprite.get_y() < -200:
         sprite.move_down(0)
     else:
@@ -63,13 +51,11 @@ stage.event_key("down", move_down)
 def collision(sprite, hit_sprite):
     global punch
     name = hit_sprite.get_image_name()
-    # If we touched and hit an enemy
     if name == "EnemyTest_bd3" and punch == True:
         hit_sprite.load_image("Enemy_Down_52f")
         hit_sprite.load_image("Enemy_Street_dead_27d")
         stage.wait(1)
         stage.remove_sprite(hit_sprite)
-    # If we touched an enemy and the enemy hit us at the same level
     if name == "Enemy_Punch_e77" and hit_sprite.get_y() == sprite.get_y():
         sprite.load_image("CharachterDead1_d33")
         sprite.load_image("CharachterDead2_b2b")
@@ -79,15 +65,12 @@ def collision(sprite, hit_sprite):
 sprite.event_collision(collision)
 
 def interval2():
-    # Take the character's position
     x = sprite.get_x()
     y = sprite.get_y()
     enemy = codesters.Sprite("EnemyTest_bd3", 260, 0)
     enemy.set_size(0.6)
     enemy.set_speed(-3)
-    # Move the enemy towards us
     enemy.glide_to(x, y)
-    # The enemy's punching sprite, which determines if we were hit
     enemy.load_image("Enemy_Punch_e77")
     enemy.load_image("EnemyTest_bd3")
 
